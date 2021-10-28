@@ -1,0 +1,116 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load indian_numbers_tags %}
+{% load l10n %}
+{% load humanize %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'register.css' %}">
+{% endblock %}
+{% block title %} SignUp - Register Your Self {% endblock %}
+{% block body %}
+<div class="container mt-5 mb-5">
+    <div class="row d-flex align-items-center justify-content-center">
+        <div class="col-md-6">
+            
+             <div class="card px-5 py-5">
+                
+                <form 
+                action="/uploadExcelFile/"
+                method="post"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+      
+                {{ form.as_p }}
+                <div class="form-check">  </div> <button class="btn btn-primary mt-4 signup" type="submit">Upload</button>
+                </form>
+                {{result}}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+ <div class="container text-center mt-5">
+            
+            <table class="table mt-4" id="_appendHere" style="background-color: white;">
+                <thead>
+                    <tr>
+                        <th scope="col">field_a</th>
+                        <th scope="col">field_b</th>
+                        <th scope="col">field_c</th>
+                        <th scope="col">field_d</th>
+                        
+                    </tr>
+                </thead>
+                {% for i in data  %}
+                <tbody>
+                    <tr>
+                         <td>
+                            {{ i.field_a }}
+                        </td>
+                        <td>
+                            {{ i.field_b }}
+                        </td>
+                        <td>
+                            {{ i.field_c }}
+                        </td>
+                        <td>
+                            {{ i.field_d }}
+                        </td>
+                        
+                        
+                    </tr>
+                    
+                {% endfor %}
+                </tbody>
+                
+            </table>
+            
+        </div> 
+
+
+
+<!-- 
+
+
+
+
+
+
+
+        <div class="container text-center mt-5">
+            <h1>See your comments...</h1>
+            <table class="table mt-4" id="_appendHere" style="background-color: white;">
+                <thead>
+                    <tr>
+                        <th scope="col">User Name</th>
+                        <th scope="col">File Name</th>
+                        <th scope="col">Comment</th>
+                        
+                        
+                    </tr>
+                </thead>
+                {% for i in comment  %}
+                {% if i.file.user.username == current %}
+                <tbody>
+                    <tr>
+                         <td>
+                            {{ i.from_user.username }}
+                        </td>
+                        <td>
+                            {{ i.file.file }}
+                        </td>
+                        <td>
+                            {{ i.body }}
+                        </td>
+                       
+                {% endif %}
+                           {% endfor %}
+            </table>
+            
+        </div> 
+         -->
+{% endblock %}
+
+    

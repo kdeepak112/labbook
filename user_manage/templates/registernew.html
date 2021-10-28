@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'register.css' %}">
+{% endblock %}
+{% block title %} SignUp - Register Your Self {% endblock %}
+{% block body %}
+<div class="container mt-5 mb-5">
+    <div class="row d-flex align-items-center justify-content-center">
+        <div class="col-md-6">
+            
+            <div class="card px-5 py-5">
+                {% if not result %}
+                <form 
+                action="/user_create/"
+                method="post">
+                {% csrf_token %}
+                {{form.as_p}}
+                <div class="form-check">  </div> <button class="btn btn-primary mt-4 signup" type="submit">Register</button>
+                <div class="text-center mt-4"> <span>Already a member?</span> <a href="{% url 'login' %}" class="text-decoration-none">Login</a> </div>
+                </form>
+                {%  else %}
+                {{ result }}
+                
+                {% endif %}
+
+                {{ error  }}
+              
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+    
