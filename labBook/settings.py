@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#uo#z2ozh$rd=*y9u%)itbqc&4c6#pslz1plyq15o@-^bj+=is'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
@@ -75,16 +75,11 @@ TEMPLATES = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
-    
+    ],
 }
+
 WSGI_APPLICATION = 'labBook.wsgi.application'
 
 
@@ -94,11 +89,11 @@ WSGI_APPLICATION = 'labBook.wsgi.application'
 DATABASES = {
     'default': {
 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-'NAME': 'djangobase',
-'USER' : 'postgres',
-'PASSWORD' : 'password',
-'HOST' : 'localhost',
-'PORT' : '',
+'NAME': 'postgres',
+'USER' : 'django_postgres',
+'PASSWORD' : 'djangopostgres',
+'HOST' : 'database-django-postgres.cwuhv3gj1ygy.ap-south-1.rds.amazonaws.com',
+'PORT' : '5432',
 }
 }
 
