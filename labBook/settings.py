@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-#uo#z2ozh$rd=*y9u%)itbqc&4c6#pslz1plyq15o@-^bj+=is'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*']
 
 
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'indian_numbers',
     'django.contrib.humanize',
     'import_export',
+    'storages',
    
 ]
 
@@ -134,16 +135,37 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
-STATIC_URL = '/static/'
+AWS_ACCESS_KEY_ID = 'AKIA3WFXMNRMMVKVZDRU'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'labbook-s3-bucket'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+
+# s3 static settings
+STATIC_LOCATION = 'static'
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+STATICFILES_STORAGE = 'labBook.storage_backends.StaticStorage'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+# s3 public media settings
+PUBLIC_MEDIA_LOCATION = 'media'
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+DEFAULT_FILE_STORAGE = 'labBook.storage_backends.PublicMediaStorage'
+
+# PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+# STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+# STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
 
 USE_THOUSAND_SEPARATOR = True
