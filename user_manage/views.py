@@ -186,9 +186,11 @@ def addcomment(request,id):
     return HttpResponseRedirect(reverse('dashboard'))
 
 def uploadExcelFile(request):
+    print('in upload excel')
+    doc = request.FILES  # returns a dict-like object
+    file = doc['file']
     if request.method == 'POST':
-        doc = request.FILES  # returns a dict-like object
-        file = doc['file']
+        
         file_resource = uploadExcelResources()
         dataset = Dataset()
         imported_data = dataset.load(file.read(),format='xlsx')
@@ -196,7 +198,7 @@ def uploadExcelFile(request):
             df_data = pd.DataFrame(list(uploadExcel.objects.all().values()))
             df_new =  pd.read_excel(file)
             # print(df_data.drop([df_data.columns[0]],axis=1) == df_new.drop([df_new.columns[0]],axis=1))
-            # print('columns:',df_new.columns,df_data.columns)
+            print('columns:',df_new.columns,df_data.columns)
             d1 = df_data.drop([df_data.columns[0]],axis=1)
             d2 = df_new.drop([df_new.columns[0]],axis=1)
             if d1.columns.equals(d2.columns):
@@ -225,10 +227,19 @@ def uploadExcelFile(request):
                     for data in imported_data:
                         value = uploadExcel(id=data[0],field_a=data[1], field_b=data[2], field_c=data[3],field_d=data[4])
                         value.save()     
+                    current_user = request.user
+                    user_id = User.objects.get(username=current_user.username)
+                    data = fileUpload(user=user_id,file = file)
+                    data.save()
         else:
             for data in imported_data:
                 value = uploadExcel(id=data[0],field_a=data[1], field_b=data[2], field_c=data[3],field_d=data[4])
                 value.save()   
+            current_user = request.user
+            user_id = User.objects.get(username=current_user.username)
+            data = fileUpload(user=user_id,file = file)
+            data.save()
+
     
     return HttpResponseRedirect('/dashboard?done=True')
 
